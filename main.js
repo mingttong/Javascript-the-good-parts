@@ -89,7 +89,34 @@ var getElementsByAttribute = function (att, value) {
     return results;
 };
 
+// ################javascript不支持块级作用域
 
+for (var i = 0; i < 5; i++) {}
+
+console.log('i定义了没有？ ' + (i ? true : false));
+
+// ####################颜色从黄色渐变
+
+var fade = function (node) {
+
+    var level = 1;
+    var step = function () {
+        var hex = level.toString(16);
+        node.style.backgroundColor = '#FFFF' + hex + hex;
+
+        if (level < 15) {
+
+            level += 1;
+            setTimeout(step, 100);
+
+        }
+    };
+
+    setTimeout(step, 100);
+
+};
+
+fade(document.body);
 
 
 
