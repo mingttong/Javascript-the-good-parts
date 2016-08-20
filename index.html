@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+</head>
+<body>
+
+<script>
+
+//    ###################part1
+
+    var Quo = function (string) {
+        this.status = string;
+    };
+
+//    Quo.prototype.get_status = function () {
+//        return this.status;
+//    };
+
+//    Quo.status = 'confused';
+//
+//    console.log(Quo.get_status());
+//    var myQuo = new Quo('confused');
+//
+//    console.log(myQuo.get_status());
+
+//    ###################part2
+
+    Function.prototype.method = function (name, func) {
+        this.prototype[name] = func;
+        return this;
+    };
+
+//    Object.prototype.method = function (name, func) {
+//        this.prototype[name] = func;
+//        return this;
+//    };
+
+    Quo.method('get_status', function () {
+        return this.status;
+    });
+
+    var myQuo = new Quo('confused');
+
+    console.log(myQuo.get_status());
+
+</script>
+</body>
+</html>
