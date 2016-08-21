@@ -118,5 +118,47 @@ var fade = function (node) {
 
 fade(document.body);
 
+// ########################伪类
 
+// 构造Mammal构造器，并扩充它的原型
+
+var Mammal = function (name) {
+    this.name = name;
+};
+
+Mammal.method('get_name', function () {
+    return this.name;
+});
+
+Mammal.method('says', function () {
+    return this.saying || '';
+});
+
+// 定义一个inherits方法来实现继承
+
+Function.method('inherits', function (Parent) {
+    this.prototype = new Parent();
+    return this;
+});
+
+// 构造Cat对象
+
+var Cat = function (name) {
+    this.name = name;
+    this.saying = 'meow';
+}
+    .inherits(Mammal) // 继承Mammal
+    .method('purr', function (n) {
+        var i, s = '';
+        for (i = 0; i < n; i += 1) {
+            if (s) {
+                s += '-';
+            }
+            s += 'r';
+        }
+        return s;
+    })
+    .method('get_name', function () {
+        return this.says() + ' ' + this.name + ' ' + this.says();
+    });
 
