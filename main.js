@@ -308,10 +308,10 @@ var by = function (name, minor) {
         } else {
             throw {
                 name: 'Error',
-                message: 'Expected an object when sorting by ' + name;
-            }
+                message: 'Expected an object when sorting by ' + name
+            };
         }
-    }
-}
+    };
+};
 
 
