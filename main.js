@@ -162,3 +162,115 @@ var Cat = function (name) {
         return this.says() + ' ' + this.name + ' ' + this.says();
     });
 
+// ################原型
+
+var myMammal = {
+    name: 'Herb the Mammal',
+    get_name: function() {
+        return this.name;
+    },
+    says: function () {
+        return this.saying || '';
+    }
+};
+
+var myCat = Object.create(myMammal);
+
+// ###############判断一个对象是否为数组
+
+// 在JavaScript中，数组实际上就是个对象
+
+// 不信你瞧
+
+var arr = [
+    'zero',
+    'one',
+    'two',
+    'three'
+];
+
+console.log('数组的类型是：' + typeof arr);
+
+// 没错，显示object，object! 我靠，我哪知道它是数组还是对象。
+
+// 现在我们有两种办法来判断
+
+// 1、
+
+var is_array_1 = function (value) {
+    return value &&
+            typeof value === 'object' &&
+            value.constructor === Array;
+};
+
+console.log('is_array_1 方法：' + is_array_1(arr));
+
+// 这种方法在识别从不同的窗口（window）或帧（frame）里构造的数组时会失败。
+
+// 2、
+
+var is_array_2 = function (value) {
+    return Object.prototype.toString.apply(value) === '[object Array]';
+};
+
+console.log('is_array_2 方法：' + is_array_2(arr));
+
+// #####################数组方法
+
+Array.method('reduce', function (f, value) {
+    var i;
+    for (i = 0; i < this.length; i += 1) {
+        value = f(this[i], value);
+    }
+    return value;
+});
+
+var data = [4, 8, 15];
+
+var add = function (a, b) {
+    return a + b;
+};
+
+data.total = function () {
+    return this.reduce(add, 0);
+};
+
+total = data.total();
+
+data['new'] = 5;
+
+console.log('此时数组data的长度为：' + data.length + '，长度未受新增方法和新增\'new\'索引的影响的影响');
+
+// 这说明了数组的长度只受属性名为整数（不论是字符串还是整数）的新增元素的影响。
+
+document.write('<br />');
+
+// ####################正则表达式例子
+
+var parse_url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;
+
+var url = "http://www.ora.com:80/goodparts?q#fragment";
+
+var result = parse_url.exec(url);
+
+var names = ['url', 'scheme', 'slash', 'host', 'port',
+'path', 'query', 'hash'];
+
+var blanks = '        ';
+var i;
+
+document.write('<pre>');
+
+for (i = 0; i < names.length; i += 1) {
+    document.writeln(names[i],':' +
+        blanks.substring(names[i].length), result[i]);
+}
+
+document.writeln('屌你公龟的', 'JavaScript居然还能用逗号连接字符串？！！！');
+document.writeln('屌你公龟的' + 'JavaScript居然还能用逗号连接字符串？！！！');
+
+document.writeln(result[0]);
+
+document.write('</pre>');
+
+
