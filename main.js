@@ -314,4 +314,22 @@ var by = function (name, minor) {
     };
 };
 
+var s = [
+    {first: 'Joe', last: 'Besser'},
+    {first: 'Moe', last: 'Howard'},
+    {first: 'Joe', last: 'DeRita'},
+    {first: 'Shemp', last: 'Howard'},
+    {first: 'Larry', last: 'Fine'},
+    {first: 'Curly', last: 'Howard'}
+];
+
+s.sort(by('last', by('first')));
+
+document.writeln('<pre>');
+for (i  = 0; i < s.length; i += 1) {
+    document.write('first: ' + s[i].first + ', ' + 'last: ' + s[i].last);
+    document.writeln();
+}
+document.writeln('</pre>');
+
 
