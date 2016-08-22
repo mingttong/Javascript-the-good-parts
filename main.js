@@ -273,4 +273,45 @@ document.writeln(result[0]);
 
 document.write('</pre>');
 
+// ###############方法——数组
+
+var a = ['a', 'b', 'c'];
+var b = ['x', 'y', 'z'];
+var c = ['i'];
+
+var d = a.push(b, true); // 返回的是新数组的长度
+
+// #############array.sort()
+
+var n = [4, 42, 15, 16, 23, 8];
+n.sort(function (a, b) {
+    return a - b;
+});
+
+console.log("排序后的数组n：" + n);
+
+// #############sort改良
+
+var by = function (name, minor) {
+    return function (o, p) {
+        var a, b;
+        if (o && p && typeof o === 'object' && typeof p === 'object') {
+            a = o[name];
+            b = p[name];
+            if (a === b) {
+                return typeof minor === 'function' ? minor(o, p) : 0;
+            }
+            if (typeof a === typeof b) {
+                return a < b ? -1 : 1;
+            }
+            return typeof a < typeof b ? -1 : 1;
+        } else {
+            throw {
+                name: 'Error',
+                message: 'Expected an object when sorting by ' + name;
+            }
+        }
+    }
+}
+
 
