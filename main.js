@@ -257,7 +257,6 @@ var names = ['url', 'scheme', 'slash', 'host', 'port',
 'path', 'query', 'hash'];
 
 var blanks = '        ';
-var i;
 
 document.write('<pre>');
 
@@ -332,4 +331,10 @@ for (i  = 0; i < s.length; i += 1) {
 }
 document.writeln('</pre>');
 
+c = '|a|b|c|'.split('|');
 
+document.write('<pre>');
+for (i = 0; i < c.length; i += 1) {
+    document.write(c[i] + ', ');
+}
+document.write('</pre>');
