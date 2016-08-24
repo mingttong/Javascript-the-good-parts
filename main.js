@@ -91,9 +91,11 @@ var getElementsByAttribute = function (att, value) {
 
 // ################javascript不支持块级作用域
 
-for (var i = 0; i < 5; i++) {}
+var scopeNotSupport = function () {
+    for (var i = 0; i < 5; i++) {}
 
-console.log('i定义了没有？ ' + (i ? true : false));
+    console.log('i定义了没有？ ' + (i ? true : false));
+}();
 
 // ####################颜色从黄色渐变
 
@@ -120,61 +122,64 @@ fade(document.body);
 
 // ########################伪类
 
-// 构造Mammal构造器，并扩充它的原型
+var pseudoclassical = function () {
+    // 构造Mammal构造器，并扩充它的原型
 
-var Mammal = function (name) {
-    this.name = name;
-};
+    var Mammal = function (name) {
+        this.name = name;
+    };
 
-Mammal.method('get_name', function () {
-    return this.name;
-});
+    Mammal.method('get_name', function () {
+        return this.name;
+    });
 
-Mammal.method('says', function () {
-    return this.saying || '';
-});
+    Mammal.method('says', function () {
+        return this.saying || '';
+    });
 
 // 定义一个inherits方法来实现继承
 
-Function.method('inherits', function (Parent) {
-    this.prototype = new Parent();
-    return this;
-});
+    Function.method('inherits', function (Parent) {
+        this.prototype = new Parent();
+        return this;
+    });
 
 // 构造Cat对象
 
-var Cat = function (name) {
-    this.name = name;
-    this.saying = 'meow';
-}
-    .inherits(Mammal) // 继承Mammal
-    .method('purr', function (n) {
-        var i, s = '';
-        for (i = 0; i < n; i += 1) {
-            if (s) {
-                s += '-';
+    var Cat = function (name) {
+        this.name = name;
+        this.saying = 'meow';
+    }
+        .inherits(Mammal) // 继承Mammal
+        .method('purr', function (n) {
+            var i, s = '';
+            for (i = 0; i < n; i += 1) {
+                if (s) {
+                    s += '-';
+                }
+                s += 'r';
             }
-            s += 'r';
-        }
-        return s;
-    })
-    .method('get_name', function () {
-        return this.says() + ' ' + this.name + ' ' + this.says();
-    });
+            return s;
+        })
+        .method('get_name', function () {
+            return this.says() + ' ' + this.name + ' ' + this.says();
+        });
+}();
 
 // ################原型
 
-var myMammal = {
-    name: 'Herb the Mammal',
-    get_name: function() {
-        return this.name;
-    },
-    says: function () {
-        return this.saying || '';
-    }
-};
+var aboutPrototype = function () {
+    var myMammal = {
+        name: 'Herb the Mammal',
+        get_name: function() {
+            return this.name;
+        },
+        says: function () {
+            return this.saying || '';
+        }
+    };
 
-var myCat = Object.create(myMammal);
+    var myCat = Object.create(myMammal);
 
 // ###############判断一个对象是否为数组
 
@@ -182,14 +187,14 @@ var myCat = Object.create(myMammal);
 
 // 不信你瞧
 
-var arr = [
-    'zero',
-    'one',
-    'two',
-    'three'
-];
+    var arr = [
+        'zero',
+        'one',
+        'two',
+        'three'
+    ];
 
-console.log('数组的类型是：' + typeof arr);
+    console.log('数组的类型是：' + typeof arr);
 
 // 没错，显示object，object! 我靠，我哪知道它是数组还是对象。
 
@@ -197,144 +202,218 @@ console.log('数组的类型是：' + typeof arr);
 
 // 1、
 
-var is_array_1 = function (value) {
-    return value &&
+    var is_array_1 = function (value) {
+        return value &&
             typeof value === 'object' &&
             value.constructor === Array;
-};
+    };
 
-console.log('is_array_1 方法：' + is_array_1(arr));
+    console.log('is_array_1 方法：' + is_array_1(arr));
 
 // 这种方法在识别从不同的窗口（window）或帧（frame）里构造的数组时会失败。
 
 // 2、
 
-var is_array_2 = function (value) {
-    return Object.prototype.toString.apply(value) === '[object Array]';
-};
+    var is_array_2 = function (value) {
+        return Object.prototype.toString.apply(value) === '[object Array]';
+    };
 
-console.log('is_array_2 方法：' + is_array_2(arr));
+    console.log('is_array_2 方法：' + is_array_2(arr));
 
 // #####################数组方法
 
-Array.method('reduce', function (f, value) {
-    var i;
-    for (i = 0; i < this.length; i += 1) {
-        value = f(this[i], value);
-    }
-    return value;
-});
+    Array.method('reduce', function (f, value) {
+        var i;
+        for (i = 0; i < this.length; i += 1) {
+            value = f(this[i], value);
+        }
+        return value;
+    });
 
-var data = [4, 8, 15];
+    var data = [4, 8, 15];
 
-var add = function (a, b) {
-    return a + b;
-};
+    var add = function (a, b) {
+        return a + b;
+    };
 
-data.total = function () {
-    return this.reduce(add, 0);
-};
+    data.total = function () {
+        return this.reduce(add, 0);
+    };
 
-total = data.total();
+    total = data.total();
 
-data['new'] = 5;
+    data['new'] = 5;
 
-console.log('此时数组data的长度为：' + data.length + '，长度未受新增方法和新增\'new\'索引的影响的影响');
+    console.log('此时数组data的长度为：' + data.length + '，长度未受新增方法和新增\'new\'索引的影响的影响');
 
 // 这说明了数组的长度只受属性名为整数（不论是字符串还是整数）的新增元素的影响。
 
-document.write('<br />');
+    document.write('<br />');
+}();
 
 // ####################正则表达式例子
 
-var parse_url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;
+var regExpExample = function () {
+    var parse_url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;
 
-var url = "http://www.ora.com:80/goodparts?q#fragment";
+    var url = "http://www.ora.com:80/goodparts?q#fragment";
 
-var result = parse_url.exec(url);
+    var result = parse_url.exec(url);
 
-var names = ['url', 'scheme', 'slash', 'host', 'port',
-'path', 'query', 'hash'];
+    var names = ['url', 'scheme', 'slash', 'host', 'port',
+        'path', 'query', 'hash'];
 
-var blanks = '        ';
+    var blanks = '        ';
 
-document.write('<pre>');
+    document.write('<pre>');
 
-for (i = 0; i < names.length; i += 1) {
-    document.writeln(names[i],':' +
-        blanks.substring(names[i].length), result[i]);
-}
+    for (i = 0; i < names.length; i += 1) {
+        document.writeln(names[i],':' +
+            blanks.substring(names[i].length), result[i]);
+    }
 
-document.writeln('屌你公龟的', 'JavaScript居然还能用逗号连接字符串？！！！');
-document.writeln('屌你公龟的' + 'JavaScript居然还能用逗号连接字符串？！！！');
+    document.writeln('屌你公龟的', 'JavaScript居然还能用逗号连接字符串？！！！');
+    document.writeln('屌你公龟的' + 'JavaScript居然还能用逗号连接字符串？！！！');
 
-document.writeln(result[0]);
+    document.writeln(result[0]);
 
-document.write('</pre>');
+    document.write('</pre>');
+}();
 
 // ###############方法——数组
 
-var a = ['a', 'b', 'c'];
-var b = ['x', 'y', 'z'];
-var c = ['i'];
+var functionOfArray = function () {
+    var a = ['a', 'b', 'c'];
+    var b = ['x', 'y', 'z'];
+    var c = ['i'];
 
-var d = a.push(b, true); // 返回的是新数组的长度
+    var d = a.push(b, true); // 返回的是新数组的长度
+}();
 
 // #############array.sort()
 
-var n = [4, 42, 15, 16, 23, 8];
-n.sort(function (a, b) {
-    return a - b;
-});
+var arraySort = function () {
+    var n = [4, 42, 15, 16, 23, 8];
+    n.sort(function (a, b) {
+        return a - b;
+    });
 
-console.log("排序后的数组n：" + n);
+    console.log("排序后的数组n：" + n);
+}();
 
 // #############sort改良
 
-var by = function (name, minor) {
-    return function (o, p) {
-        var a, b;
-        if (o && p && typeof o === 'object' && typeof p === 'object') {
-            a = o[name];
-            b = p[name];
-            if (a === b) {
-                return typeof minor === 'function' ? minor(o, p) : 0;
+var sortImprove = function () {
+    var by = function (name, minor) {
+        return function (o, p) {
+            var a, b;
+            if (o && p && typeof o === 'object' && typeof p === 'object') {
+                a = o[name];
+                b = p[name];
+                if (a === b) {
+                    return typeof minor === 'function' ? minor(o, p) : 0;
+                }
+                if (typeof a === typeof b) {
+                    return a < b ? -1 : 1;
+                }
+                return typeof a < typeof b ? -1 : 1;
+            } else {
+                throw {
+                    name: 'Error',
+                    message: 'Expected an object when sorting by ' + name
+                };
             }
-            if (typeof a === typeof b) {
-                return a < b ? -1 : 1;
-            }
-            return typeof a < typeof b ? -1 : 1;
-        } else {
-            throw {
-                name: 'Error',
-                message: 'Expected an object when sorting by ' + name
-            };
-        }
+        };
     };
-};
 
-var s = [
-    {first: 'Joe', last: 'Besser'},
-    {first: 'Moe', last: 'Howard'},
-    {first: 'Joe', last: 'DeRita'},
-    {first: 'Shemp', last: 'Howard'},
-    {first: 'Larry', last: 'Fine'},
-    {first: 'Curly', last: 'Howard'}
-];
+    var s = [
+        {first: 'Joe', last: 'Besser'},
+        {first: 'Moe', last: 'Howard'},
+        {first: 'Joe', last: 'DeRita'},
+        {first: 'Shemp', last: 'Howard'},
+        {first: 'Larry', last: 'Fine'},
+        {first: 'Curly', last: 'Howard'}
+    ];
 
-s.sort(by('last', by('first')));
+    s.sort(by('last', by('first')));
 
-document.writeln('<pre>');
-for (i  = 0; i < s.length; i += 1) {
-    document.write('first: ' + s[i].first + ', ' + 'last: ' + s[i].last);
-    document.writeln();
-}
-document.writeln('</pre>');
+    document.writeln('<pre>');
+    for (i  = 0; i < s.length; i += 1) {
+        document.write('first: ' + s[i].first + ', ' + 'last: ' + s[i].last);
+        document.writeln();
+    }
+    document.writeln('</pre>');
 
-c = '|a|b|c|'.split('|');
+    var c = '|a|b|c|'.split('|');
 
-document.write('<pre>');
-for (i = 0; i < c.length; i += 1) {
-    document.write(c[i] + ', ');
-}
-document.write('</pre>');
+    document.write('<pre>');
+    for (i = 0; i < c.length; i += 1) {
+        document.write(c[i] + ', ');
+    }
+    document.write('</pre>');
+
+    console.log((0.1 * 10 + 0.2 * 10) / 10);
+
+    var t = 'hey,sb!';
+
+    console.log(t);
+
+    var stooge = {
+        t: 'wokao'
+    };
+
+    console.log('属性：' + stooge.t);
+}();
+
+// #########################创建一个函数时的prototype
+
+var functionFund = function () {
+    var myFunc = function () {
+        return "I'm a function";
+    };
+
+    var myObj = {
+        myName: 'zhouwunan',
+        myDog: 'laoda',
+        myBrother: 'zhouyi'
+    };
+
+    console.log(myFunc.constructor);
+
+    console.log(myObj.prototype);
+
+    (function () {
+        var hidden_variable;
+
+        console.log('diaonigonggui');
+    }());
+
+    console.log(new function () {
+        this.name = 'zhouwunan'
+    }());
+}();
+
+// ###################作用域
+
+//var scope = function () {
+//
+//     var foo = function () {
+//        var a = 3, b = 5;
+//
+//        var bar = function () {
+//            var b = 7, c = 11;
+//
+//            a += b + c;
+//
+//            console.log('1. a = ' + a + ', b = ' + b + ', c = ' + c);
+//        };
+//
+//        console.log('2. a = ' + a + ', b = ' + b + ', c = ' + c);
+//
+//        bar();
+//        console.log('3. a = ' + a + ', b = ' + b + ', c = ' + c);
+//
+//    };
+//
+//    foo();
+//}();
