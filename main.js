@@ -378,7 +378,7 @@ var functionFund = function () {
         myBrother: 'zhouyi'
     };
 
-    console.log(myFunc.constructor);
+    console.log(myFunc.prototype);
 
     console.log(myObj.prototype);
 
@@ -417,3 +417,129 @@ var functionFund = function () {
 //
 //    foo();
 //}();
+
+var memoization = function () {
+
+    var count = 0;
+
+    var fibonacci = function () {
+        var memo = [0, 1];
+        var fib = function (n) {
+            var result = memo[n];
+            //console.log(result);
+            count += 1;
+            if (typeof result !== 'number') {
+                result = fib(n - 1) + fib(n - 2);
+                memo[n] = result;
+            }
+
+            return result;
+        };
+
+        return fib;
+
+    }();
+
+    document.write('<pre>');
+
+    for (var i = 0; i <= 10; i += 1) {
+        document.writeln('// ' + i + ': ' + fibonacci(i));
+    }
+    document.writeln('count: ' + count);
+
+    document.write('</pre>');
+}();
+
+document.writeln("#######################################################");
+
+var memoization1 = function () {
+    document.write('<pre>');
+
+    var count = 0;
+
+    var memoizer = function (memo, formula) {
+        var recur = function (n) {
+            count += 1;
+            var result = memo[n];
+            if (typeof result !== 'number') {
+                result = formula (recur, n);
+                memo[n] = result;
+            }
+            return result;
+        };
+        return recur;
+    };
+
+    var fibonacci = memoizer([0, 1], function (recur, n) {
+        return recur (n - 1) + recur (n - 2);
+    });
+
+    var i;
+
+    document.writeln('书中方法：');
+    for (i = 0; i <= 10; i += 1) {
+        document.writeln('// ' + i + ': ' + fibonacci(i));
+    }
+
+    document.writeln('count = ' + count);
+    document.write('</pre>');
+}();
+
+document.writeln("#######################################################");
+
+var memoization2 = function () {
+
+    document.write('<pre>');
+
+    var count = 0;
+
+    var memoizer = function (memo, formula) {
+        var recur = function (n) {
+            count += 1;
+            var result = memo[n];
+            //console.log(result);
+            if (typeof result !== 'number') {
+                result = formula (recur, n);
+                memo[n] = result;
+            }
+            return result;
+        };
+        return recur;
+    };
+
+    var fibonacci = function () {
+
+        var memo = [0, 1];
+
+        return memoizer(memo, function (recur, n) {
+            return recur (n - 1) + recur (n - 2);
+        });
+
+    }();
+
+    var i;
+
+    document.writeln('我的方法：');
+    for (i = 0; i <= 10; i += 1) {
+        document.writeln('// ' + i + ': ' + fibonacci(i));
+    }
+
+    document.writeln('count = ' + count);
+    document.write('</pre>');
+
+}();
+
+var Inheritance = function () {
+
+
+    var Mammal = function (name) {
+        this.name = name;
+    };
+
+    var myMammal = {};
+
+    myMammal.prototype = new Mammal();
+
+    console.log(myMammal);
+
+}();
