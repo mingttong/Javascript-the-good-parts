@@ -543,3 +543,302 @@ var Inheritance = function () {
     console.log(myMammal);
 
 }();
+
+var arrayLiterals = function () {
+
+    var numbers = [];
+
+    numbers['one'] = 1;
+    numbers['two'] = 2;
+    numbers['three'] = 3;
+
+    console.log(numbers.length);
+
+}();
+
+var regExp = function () {
+
+    function make_a_matcher() {
+        return /a/gi;
+    }
+
+    var x = make_a_matcher();
+    var y = make_a_matcher();
+
+    x.lastIndex = 9;
+
+    console.log(y.lastIndex);
+
+}();
+
+console.log('#########################################################');
+console.log('// 封装');
+
+var fengzhuang = function () {
+
+    var Book = function (id, bookname, price) {
+
+        var num = 1;
+
+        function checkId() {
+
+        }
+
+        this.getName = function () {};
+        this.getPrice = function () {};
+        this.setName = function () {};
+        this.setPrice = function () {};
+
+        this.id = id;
+        this.bookname = bookname;
+        this.price = price;
+    };
+
+    Book.prototype = {
+        display: function () {}
+    };
+
+    Book.isChinese = true;
+    Book.prototype = {
+        isJSBook: false,
+        display: function () {}
+    };
+
+    var b = new Book(11, 'JavaScript设计模式', 50);
+
+    console.log(b.num);
+    console.log(b.isJSBook);
+    console.log(b.id);
+    console.log(b.isChinese);
+
+}();
+
+console.log('#########################################################');
+console.log('// 闭包');
+
+var bibao = function () {
+
+    var Book = (function () {
+
+        // 静态私有变量
+        var bookNum = 0;
+        // 静态私有方法
+        function checkBook(name) {
+
+        }
+
+        // 返回构造函数
+        return function (newId, newName, newPrice) {
+            // 私有变量
+            var name, price;
+            // 私有方法
+            function checkID (id) {}
+
+            // 特权方法
+            this.getName = function () {
+                name = newName;
+            };
+            this.getPrice = function () {
+                price = newPrice;
+            };
+            this.setName = function () {};
+            this.setPrice = function () {};
+
+            // 公有属性
+            this.id = newId;
+            // 公有方法
+            this.copy = function () {};
+            bookNum += 1;
+
+            if (bookNum > 100) {
+                throw new Error('我们仅出版100本书。');
+            }
+
+            // 构造器
+            this.setName(name);
+            this.setPrice(price);
+
+        }
+
+    })();
+
+    Book.prototype = {
+        // 静态公有属性
+        isJSBook : false,
+        // 静态公有方法
+        display : function () {}
+    };
+
+}();
+
+console.log('#########################################################');
+console.log('// 图书安全类');
+
+var tushuanquanlei = function () {
+
+    // 图书安全类
+    var Book = function (title, time, type) {
+        // 判断执行过程中this是否是当前这个对象（如果是，说明是用new创建的）
+        if (this instanceof Book) {
+            this.title = title;
+            this.time = time;
+            this.type = type;
+        } else {
+            // 否则重新创建这个对象
+            return new Book(title, time, type);
+        }
+
+        // 很酷
+    };
+
+    var book = Book('JavaScript', '2014', 'js');
+
+    console.log(book);
+
+}();
+
+console.log('#########################################################');
+console.log('// 类式继承');
+
+// 类式继承
+var leishijicheng = function () {
+
+    // 声明父类
+    function SuperClass () {
+        this.superValue = true;
+    }
+    // 为父类添加共有方法
+    SuperClass.prototype.getSuperValue = function () {
+        return this.superValue;
+    };
+    // 声明子类
+    function SubClass () {
+        this.subValue = false;
+    }
+
+    // 继承父类
+    SubClass.prototype = new SuperClass();
+    // 为子类添加共有方法
+    SubClass.prototype.getSubValue = function () {
+        return this.subValue;
+    };
+
+    // 实例化子类
+    var instance = new SubClass();
+    console.log(instance.getSuperValue());
+    console.log(instance.getSubValue());
+    console.log(instance instanceof SuperClass); // true
+    console.log(instance instanceof SubClass); // true
+    console.log(SubClass instanceof SuperClass); // false
+
+}();
+
+console.log('#########################################################');
+console.log('// 类式继承的缺点');
+
+// 类式继承的缺点
+var leishijichengquedian = function () {
+
+    function SuperClass () {
+        this.books = ['JavaScript', 'html', 'css'];
+    }
+
+    function SubClass () {}
+
+    SubClass.prototype = new SuperClass();
+    var instance1 = new SubClass();
+    var instance2 = new SubClass();
+    console.log('instance2.books: ' + instance2.books);
+    instance1.books.push('设计模式');
+    console.log('给instance1.books push了一个\'设计模式\'以后：');
+    console.log('instance2.books: ' + instance2.books);
+
+}();
+
+console.log('#########################################################');
+console.log('// 构造函数继承');
+
+// 构造函数继承
+var gouzaohanshujicheng = function () {
+
+    // 声明父类
+    function SuperClass (id) {
+        // 引用类型共有属性
+        this.books = ['JavaScript', 'html', 'css'];
+        // 值类型共有属性
+        this.id = id;
+    }
+    // 父类声明原型方法
+    SuperClass.prototype.showBooks = function () {
+        console.log(this.books);
+    };
+    // 声明子类
+    function SubClass (id) {
+        // 继承父类*********精华***********
+        SuperClass.call(this, id);
+    }
+    // 创建第一个子类的实例
+    var instance1 = new SubClass(10);
+    // 创建第二个子类的实例
+    var instance2 = new SubClass(11);
+
+    instance1.books.push('设计模式');
+    console.log(instance1.books); // ["JavaScript", "html", "css", "设计模式"]
+    console.log(instance1.id); // 10
+    console.log(instance2.books); // ["JavaScript", "html", "css"]
+    console.log(instance2.id); // 11
+
+    //instance1.showBooks(); // TypeError
+
+}();
+
+console.log('#########################################################');
+console.log('// 组合继承');
+
+// 组合继承
+var zuhejicheng = function () {
+
+    // 声明父类
+    function SuperClass (name) {
+        // 值类型共有属性
+        this.name = name;
+        // 引用型共有属性
+        this.books = ['html', 'css', 'JavaScript'];
+    }
+    // 父类原型共有方法
+    SuperClass.prototype.getName = function () {
+        console.log(this.name);
+    };
+    // 声明子类
+    function SubClass (name, time) {
+        // 构造函数式继承父类name属性
+        SuperClass.call(this, name);
+        // 子类中新增共有属性
+        this.time = time;
+    }
+    // 类式继承， 子类原型继承父类
+    SubClass.prototype = new SuperClass();
+    // 子类原型方法
+    SubClass.prototype.getTime = function () {
+        console.log(this.time);
+    };
+
+    var instance1 = new SubClass('js book', 2014);
+    instance1.books.push('设计模式');
+    console.log(instance1.books);
+    instance1.getName();
+    instance1.getTime();
+
+    var instance2 = new SubClass('css book', 2013);
+    console.log(instance2.books);
+    instance2.getName();
+    instance2.getTime();
+
+    console.log('// 但是这种继承方式调用了两遍父类的构造函数');
+
+}();
+
+console.log('#########################################################');
+console.log('// 原型式继承');
+
+
