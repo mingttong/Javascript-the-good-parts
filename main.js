@@ -571,6 +571,36 @@ var regExp = function () {
 
 }();
 
+/**
+* 通用方法
+* */
+
+function inheritObject(o) {
+    // 声明一个过渡函数对象
+    function F () {}
+    // 过度对象的原型继承父类对象
+    F.prototype = o;
+    // 返回过度对象的一个实例
+    return new F();
+}
+
+/**
+ * 寄生式继承 继承原型
+ * 传递参数 subClass 子类
+ * 传递参数 superClass 父类
+ * */
+
+function inheritPrototype (subClass, superClass) {
+    // 复制一份父类的原型副本保存在变量
+    var p = inheritObject(superClass.prototype);
+    // 修正因为重写子类原型导致子类的constructor属性被修改
+    p.constructor = subClass;
+    // 设置子类的原型
+    subClass.prototype = p;
+}
+
+// end
+
 console.log('#########################################################');
 console.log('// 封装');
 
@@ -740,6 +770,7 @@ console.log('// 类式继承的缺点');
 var leishijichengquedian = function () {
 
     function SuperClass () {
+        this.name = 'js';
         this.books = ['JavaScript', 'html', 'css'];
     }
 
@@ -752,6 +783,14 @@ var leishijichengquedian = function () {
     instance1.books.push('设计模式');
     console.log('给instance1.books push了一个\'设计模式\'以后：');
     console.log('instance2.books: ' + instance2.books);
+
+    instance1.name = '1s';
+    instance2.name = '2s';
+
+    console.log('// 对于非引用类型的属性');
+    console.log(instance1.name);
+    console.log(instance2.name);
+    console.log('// 说明只有引用类型的属性在类式继承中会在子类的所有实例中公用');
 
 }();
 
@@ -789,6 +828,9 @@ var gouzaohanshujicheng = function () {
     console.log(instance2.id); // 11
 
     //instance1.showBooks(); // TypeError
+
+    console.log(instance1 instanceof SuperClass);
+    console.log(SubClass instanceof SuperClass);
 
 }();
 
@@ -841,4 +883,117 @@ var zuhejicheng = function () {
 console.log('#########################################################');
 console.log('// 原型式继承');
 
+var yuanxingshijicheng = function () {
 
+    // 其实和类式继承是一样的
+
+    function inheritObject(o) {
+        // 声明一个过渡函数对象
+        function F () {}
+        // 过度对象的原型继承父类对象
+        F.prototype = o;
+        // 返回过度对象的一个实例
+        return new F();
+    }
+
+    var book = {
+        name: 'js book',
+        alikeBook: ['css book', 'html book']
+    };
+    var newBook = inheritObject(book);
+    newBook.name = 'ajax book';
+    newBook.alikeBook.push('xml book');
+
+    var otherBook = inheritObject(book);
+    otherBook.name = 'flash book';
+    otherBook.alikeBook.push('as book');
+
+    console.log(newBook.name);
+    console.log(newBook.alikeBook);
+
+    console.log(otherBook.name);
+    console.log(otherBook.alikeBook);
+
+    console.log(book.name);
+    console.log(book.alikeBook);
+
+    console.log('和类式继承一样，对于非引用类型的属性ok，对于引用类型的属性不ok');
+
+}();
+
+console.log('#########################################################');
+console.log('// 寄生式继承');
+
+var jishengshijicheng = function () {
+
+    // 声明基对象
+    var book = {
+        name: 'js book',
+        alikeBook: ['css book', 'html book']
+    };
+    function createBook (obj) {
+        // 通过原型继承方式创建新对象
+        var o = new inheritObject(obj);
+        // 拓展新对象
+        o.getName = function () {
+            console.log(name);
+        };
+        // 返回拓展后的新对象
+        return o;
+    }
+
+}();
+
+console.log('#########################################################');
+console.log('// 寄生组合式继承');
+
+var jishengzuheshijicheng = function () {
+
+    /**
+    * 寄生式继承 继承原型
+    * 传递参数 subClass 子类
+    * 传递参数 superClass 父类
+    * */
+
+    function inheritPrototype (subClass, superClass) {
+        // 复制一份父类的原型副本保存在变量
+        var p = inheritObject(superClass.prototype);
+        // 修正因为重写子类原型导致子类的constructor属性被修改
+        p.constructor = subClass;
+        // 设置子类的原型
+        subClass.prototype = p;
+    }
+
+    // 定义父类
+    function SuperClass (name) {
+        this.name = name;
+        this.colors = ['red', 'blue', 'green'];
+    }
+    // 定义父类原型的方法
+    SuperClass.prototype.getName = function () {
+        console.log(this.name);
+    };
+    // 定义子类
+    function SubClass (name, time) {
+        // *****构造函数式继承******
+        SuperClass.call(this, name);
+        // 子类新增属性
+        this.time = time;
+    }
+    // ******寄生式继承父类原型******
+    inheritPrototype(SubClass, SuperClass);
+    // 子类新增原型方法
+    SubClass.prototype.getTime = function () {
+        console.log(this.time);
+    };
+    // 创建两个测试方法
+    var instance1 = new SubClass('js book', 2014);
+    var instance2 = new SubClass('css book', 2013);
+
+    instance1.colors.push('**black**');
+    console.log(instance1.colors);
+    console.log(instance2.colors);
+    instance2.getName();
+    instance2.getTime();
+
+}();
